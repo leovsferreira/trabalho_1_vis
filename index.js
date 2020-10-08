@@ -29,8 +29,30 @@ let object = { div: "id para o elemento html onde o gráfico será renderizado",
                filePath: "path_to_csv",
                rows: [uma array de linhas que serão selecionadas para visualização, com exceção do header, se houver] || null = todas as linhas,
                xData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo x",
-               yData "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo y"
+               yData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo y",
+               dataSelector: true se o usuário quer um seletor de dados
              }
+
+
+let object = {div: '#main',
+              width: 900,
+              height: 600,
+              top: 20,
+              left: 90,
+              bottom: 200,
+              right: 10,
+              xLabel: 'cities',
+              xLabelPos: [470, 550],
+              yLabel: 'deaths',
+              yLabelPos: [20, 225],
+              filePath: './data/corona_rj_data.csv',
+              rows: [49, 42, 79, 65, 56, 30], 
+              xData: 'city',
+              yData: 'deaths',
+              dataSelector: true};
+
+startBarChart(object);
+
 */
 
 let object = {div: '#main',
@@ -45,8 +67,9 @@ let object = {div: '#main',
               yLabel: 'deaths',
               yLabelPos: [20, 225],
               filePath: './data/corona_rj_data.csv',
-              rows: [1, 2, 3, 4, 5, 6], 
+              rows: [49, 42, 79, 65, 56, 30], 
               xData: 'city',
-              yData: 'deaths'};
+              yData: 'deaths',
+              dataSelector: true};
 
 startBarChart(object);

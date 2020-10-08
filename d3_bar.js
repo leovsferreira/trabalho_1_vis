@@ -39,7 +39,7 @@ class BarChart {
     this.rows = this.config.rows;
     this.xData = this.config.xData;
     this.yData = this.config.yData;
-    
+  
     this.createSvg();
   };
 
@@ -88,13 +88,23 @@ class BarChart {
   };
 
   createRect() {
+    let tooltip = d3.select("body").append("div").attr("class", "tooltip");
     this.svg.selectAll('rect')
             .data(this.dataPlaceholder)
             .join('rect')
               .attr('x', (d) => this.xScale(d.x))
               .attr('y', (d) => this.yScale(d.y))
               .attr('height', (d) => this.height - this.bottom - this.yScale(d.y))
-              .attr('width', this.xScale.bandwidth());
+              .attr('width', this.xScale.bandwidth())
+              .on("mousemove", function(d, i){
+                console.log(i)
+                tooltip
+                    .style("left", event.pageX - 42 + "px")
+                    .style("top", event.pageY - 38 + "px")
+                    .style("display", "inline-block")
+                    .html((Math.round(i.y)));
+            })
+            .on("mouseout", function(d){ tooltip.style("display", "none");});
   }
 
   createAxisLabels() {
@@ -182,5 +192,5 @@ async function startBarChart(object) {
   chart.createAxis();
   chart.createRect();
   chart.createAxisLabels();
-  chart.createSelector();
+  if(object.dataSelector) chart.createSelector();
 };
