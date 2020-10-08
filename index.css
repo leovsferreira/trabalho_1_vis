@@ -1,12 +1,34 @@
-.center-div {
-  width: 900px;
-  height: 600px;
+body {
+  background-color:#F5F5F5;
 }
-
 .container {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+rect {
+  fill: #ec0101;
+}
+
+#drop{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+text {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.y-label {
+ font-size: 18px
+}
+
+.x-label {
+  font-size: 18px;
 }
