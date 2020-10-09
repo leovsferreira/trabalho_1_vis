@@ -83,6 +83,7 @@ class LineChart {
 
         this.svg.append('path')
                 .datum(this.dataPlaceholder)
+                .attr('class', 'line-data')
                 .attr('fill', 'none')
                 .attr('stroke', '#cd0a0a')
                 .attr('stroke-width', '1.8')
@@ -106,6 +107,41 @@ class LineChart {
                 .text(this.xLabel)        
     }
 
+    createSelector() {
+        let selection;
+        let self = this;
+        d3.select('#drop')
+                .append('select')
+                .attr('id', 'dropdown')
+                .on('change', function(d){
+                    self.yData = document.getElementById('dropdown').value;
+                    self.createScales()
+                    self.line = d3.line()
+                        .curve(d3.curveBasis)
+                        .defined(d => !isNaN(d.x))
+                        .x((d) => self.xScale(d.x))
+                        .y((d) => self.yScale(d.y))
+                    self.yAxis = d3.axisLeft(self.yScale);
+                    self.svg.selectAll('text.y-label')
+                        .text(self.yData)
+                    self.svg.selectAll('g.y.axis')
+                        .transition()
+                        .duration(400)
+                        .call(self.yAxis)
+                    self.svg.selectAll('path.line-data')
+                            .datum(self.dataPlaceholder)
+                            .transition()
+                            .duration(400)
+                            .attr('d', self.line)
+                })
+                .selectAll('option')
+                  .data(this.headers)
+                  .enter()
+                  .append('option')
+                  .attr('value', (d) => d)
+                  .text((d) => d)
+    }
+
     async loadCSV() {
         let newData = [];
         let i;
@@ -114,12 +150,13 @@ class LineChart {
         this.headers = this.headers.filter(item => item !=  this.xData);
         for(i = 0; i < this.headers.length; i++) {
             if(this.headers[i] == this.yData) {
-            if(i != 0) {
-                this.headers[i] = this.headers[0];
-                this.headers[0] = this.yData;
+                if(i != 0) {
+                    this.headers[i] = this.headers[0];
+                    this.headers[0] = this.yData;
+                }
             }
-            }
-        }    
+        }
+        
         if(this.rows) {
             for(i = 0; i < this.rows.length; i++) {
                 newData.push(this.data[this.rows[i] - 1]);
@@ -136,6 +173,6 @@ async function startLineChart(object) {
     chart.createAxis();
     chart.createLine();
     chart.createAxisLabels();
-    //if(object.dataSelector) chart.createSelector();
+    if(object.dataSelector) chart.createSelector();
 };
   
