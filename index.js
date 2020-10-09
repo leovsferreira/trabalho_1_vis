@@ -22,10 +22,10 @@ let object = {div: '#main',
               xLabelPos: [470, 500],
               yLabel: 'death_rate',
               yLabelPos: [20, 225],
-              filePath: './data/niteroi_series.csv',
+              filePath: './data/corona_rj_data.csv',
               rows: null, 
               xData: 'date',
               yData: 'death_rate',
               dataSelector: true};
 
-startLineChart(object);
+startScatterChart(object);

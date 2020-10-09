@@ -1,3 +1,47 @@
+/*
+A função startLineChart(object) plota um line chart onde,
+preferenciamente, o eixo x deve representar um eixo para dados contínuos (tempo).
+
+Esta função recebe um object:
+let object = { div: "id para o elemento html onde o gráfico será renderizado",
+               width: largura do gráfico,
+               height: altura do gráfico,
+               top: margem do topo em relação a altura definida,
+               left: margem à esquerda em relação a largura definida,
+               bottom: margem de baixo em relação a altura definida,
+               right: margem à direira em relação a largura definida,
+               xLabel: "label do eixo x",
+               xLabelPos: [inteiro em relação a width, inteiro em relação a height],
+               yLabel: "label do eixo y",
+               yLabelPos: [inteiro em relação a width, inteiro em relação a height],
+               filePath: "path_to_csv",
+               rows: [uma array de linhas que serão selecionadas para visualização, com exceção do header, se houver] || null = todas as linhas,
+               xData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo x",
+               yData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo y",
+               dataSelector: true se o usuário quer um seletor de dados
+             }
+
+Rodar em index.js
+
+let object = {div: '#main',
+              width: 900,
+              height: 600,
+              top: 20,
+              left: 90,
+              bottom: 200,
+              right: 10,
+              xLabel: 'dates',
+              xLabelPos: [470, 500],
+              yLabel: 'death_rate',
+              yLabelPos: [20, 225],
+              filePath: './data/niteroi_series.csv',
+              rows: null, 
+              xData: 'date',
+              yData: 'death_rate',
+              dataSelector: true};
+
+startLineChart(object);
+*/
 class LineChart {
     constructor(config) {
         this.config = config;
