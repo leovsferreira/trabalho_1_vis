@@ -18,6 +18,7 @@ let object = { div: "id para o elemento html onde o gráfico será renderizado",
                rows: [uma array de linhas que serão selecionadas para visualização, com exceção do header, se houver] || null = todas as linhas,
                xData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo x",
                yData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo y",
+               lineWidth: grossura da linha || 1.8,
                dataSelector: true se o usuário quer um seletor de dados
              }
 
@@ -38,6 +39,7 @@ let object = {div: '#main',
               rows: null, 
               xData: 'date',
               yData: 'death_rate',
+              lineWidth: 4,
               dataSelector: true};
 
 startLineChart(object);
@@ -66,9 +68,10 @@ class LineChart {
         this.xLabelPos = this.config.xLabelPos;
         this.yLabelPos = this.config.yLabelPos;
         this.filePath = this.config.filePath;
-        this.rows = this.config.rows;
+        this.rows = this.config.rows || null;
         this.xData = this.config.xData;
         this.yData = this.config.yData;
+        this.lineWidth = this.config.lineWidth || 1.8;
         this.line = null;
         
         this.createSvg();
@@ -130,7 +133,7 @@ class LineChart {
                 .attr('class', 'line-data')
                 .attr('fill', 'none')
                 .attr('stroke', '#cd0a0a')
-                .attr('stroke-width', '1.8')
+                .attr('stroke-width', `${this.lineWidth}`)
                 .attr('d', this.line)
 
     }

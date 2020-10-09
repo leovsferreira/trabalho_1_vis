@@ -17,15 +17,17 @@ let object = {div: '#main',
               top: 20,
               left: 90,
               bottom: 200,
-              right: 10,
-              xLabel: 'cities',
-              xLabelPos: [470, 550],
+              right: 30,
+              xLabel: 'confirmed_per_100k_inhabitants',
+              xLabelPos: [470, 500],
               yLabel: 'deaths',
               yLabelPos: [20, 225],
-              filePath: './data/corona_rj_data.csv',
-              rows: [49, 42, 79, 65, 56, 6], 
-              xData: 'city',
+              filePath: './data/niteroi_series.csv',
+              rows: null, 
+              xData: 'confirmed_per_100k_inhabitants',
               yData: 'deaths',
-              dataSelector: true};
+              circleSize: 4,
+              dataSelector: true
+            };
 
-startBarChart(object);
+startScatterChart(object);

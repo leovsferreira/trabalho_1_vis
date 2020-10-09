@@ -1,3 +1,48 @@
+/*
+A função startScatterChart(object) plota um scatter chart.
+
+Esta função recebe um object:
+let object = { div: "id para o elemento html onde o gráfico será renderizado",
+               width: largura do gráfico,
+               height: altura do gráfico,
+               top: margem do topo em relação a altura definida,
+               left: margem à esquerda em relação a largura definida,
+               bottom: margem de baixo em relação a altura definida,
+               right: margem à direira em relação a largura definida,
+               xLabel: "label do eixo x",
+               xLabelPos: [inteiro em relação a width, inteiro em relação a height],
+               yLabel: "label do eixo y",
+               yLabelPos: [inteiro em relação a width, inteiro em relação a height],
+               filePath: "path_to_csv",
+               rows: [uma array de linhas que serão selecionadas para visualização, com exceção do header, se houver] || null = todas as linhas,
+               xData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo x",
+               yData: "de acordo com o header, representa a coluna do dado a ser exibido pelo eixo y",
+               circleSize: tamanho dos pontos || 1,
+               dataSelectors: true se o usuário quer dois seletores de dados
+             }
+
+Rodar em index.js
+
+let object = {div: '#main',
+              width: 900,
+              height: 600,
+              top: 20,
+              left: 90,
+              bottom: 200,
+              right: 10,
+              xLabel: 'dates',
+              xLabelPos: [470, 500],
+              yLabel: 'death_rate',
+              yLabelPos: [20, 225],
+              filePath: './data/niteroi_series.csv',
+              rows: null, 
+              xData: 'date',
+              yData: 'death_rate',
+              circleSize: 4,
+              dataSelectors: true};
+
+startLineChart(object);
+*/
 class ScatterChart {
     constructor(config) {
         this.config = config;
@@ -224,5 +269,5 @@ async function startScatterChart(object) {
     chart.createAxis();
     chart.createAxisLabels();
     chart.createCircles();
-    chart.createSelectors();  
+    if(object.dataSelector) chart.createSelectors();  
 };
