@@ -9,8 +9,8 @@ class ScatterChart {
         this.xAxis = null;
         this.selection = null;
         this.dataPlaceholder = null;
-        this.x = [Infinity, -Infinity],
-        this.y = [Infinity, -Infinity], 
+        this.maxY = null;
+        this.maxX = null;
         this.width = this.config.width;
         this.height = this.config.height;
         this.left = this.config.left;
@@ -36,6 +36,37 @@ class ScatterChart {
             .attr('y', 10)
             .attr('width', this.width)
             .attr('height', this.height);
+    };
+
+    createScales() {
+        this.dataPlaceholder = this.data.map((d) => {
+          return {
+            x: +d[this.xData],
+            y: +d[this.yData]
+        }});
+        this.maxY = d3.max(this.dataPlaceholder.map(d => d.y))
+        this.maxX = d3.max(this.dataPlaceholder.map(d => d.x))
+        this.yScale = d3.scaleLinear().range([this.height - this.bottom, this.top]).domain([0, this.maxY]).nice();
+        this.xScale = d3.scaleLinear().range([this.left, this.width - this.right]).domain([0, this.maxX]).nice();
+      };
+
+    createAxis() {
+        this.xAxis = d3.axisBottom(this.xScale);
+        this.yAxis = d3.axisLeft(this.yScale);
+        this.svg.append('g')
+                .attr('transform', `translate(0,${this.height - this.bottom})`)
+                .call(this.xAxis)
+                    .selectAll('text')
+                    .style('text-anchor', 'end')
+                    .attr('dx', '-.8em')
+                    .attr('dy', '-.55em')
+                    .attr('transform', 'rotate(-90)' );
+
+
+        this.svg.append('g')
+                .attr('class', 'y axis')
+                .attr('transform', `translate(${this.left},0)`)
+                .call(this.yAxis);
     };
 
     async loadCSV() {
@@ -65,5 +96,7 @@ class ScatterChart {
 async function startScatterChart(object) {
     let chart = new ScatterChart(object);
     await chart.loadCSV();
+    chart.createScales();
+    chart.createAxis();
     
 };

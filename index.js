@@ -24,7 +24,7 @@ let object = {div: '#main',
               yLabelPos: [20, 225],
               filePath: './data/corona_rj_data.csv',
               rows: null, 
-              xData: 'date',
+              xData: 'deaths',
               yData: 'death_rate',
               dataSelector: true};
 
