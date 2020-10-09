@@ -89,11 +89,8 @@ class BarChart {
         y: +d[this.yData]
     }});
 
-    this.y = d3.extent(this.dataPlaceholder, d => {
-      return d.y;
-    });
-
-    this.yScale = d3.scaleLinear().range([this.height - this.bottom, this.top]).domain([0, this.y[1]]).nice();
+    this.y = d3.max(this.dataPlaceholder.map(d => d.y))
+    this.yScale = d3.scaleLinear().range([this.height - this.bottom, this.top]).domain([0, this.y]).nice();
     this.xScale = d3.scaleBand().range([this.left, this.width - this.right]).domain(this.dataPlaceholder.map((d) => d.x)).padding(0.1);
   };
 
