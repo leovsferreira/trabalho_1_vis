@@ -93,7 +93,7 @@ class BarChart {
       return d.y;
     });
 
-    this.yScale = d3.scaleLinear().range([this.height - this.bottom, this.top]).domain([0, this.y[1]]);
+    this.yScale = d3.scaleLinear().range([this.height - this.bottom, this.top]).domain([0, this.y[1]]).nice();
     this.xScale = d3.scaleBand().range([this.left, this.width - this.right]).domain(this.dataPlaceholder.map((d) => d.x)).padding(0.1);
   };
 
@@ -126,7 +126,6 @@ class BarChart {
               .attr('height', (d) => this.height - this.bottom - this.yScale(d.y))
               .attr('width', this.xScale.bandwidth())
               .on("mousemove", function(d, i){
-                console.log(i)
                 tooltip
                     .style("left", event.pageX - 42 + "px")
                     .style("top", event.pageY - 38 + "px")

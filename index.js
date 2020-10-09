@@ -25,7 +25,7 @@ let object = {div: '#main',
               filePath: './data/niteroi_series.csv',
               rows: null, 
               xData: 'date',
-              yData: 'deaths',
+              yData: 'death_rate',
               dataSelector: true};
 
 startLineChart(object);

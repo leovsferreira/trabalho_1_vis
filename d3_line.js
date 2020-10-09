@@ -25,6 +25,7 @@ class LineChart {
         this.rows = this.config.rows;
         this.xData = this.config.xData;
         this.yData = this.config.yData;
+        this.line
         
         this.createSvg();
     };
@@ -50,9 +51,8 @@ class LineChart {
         });
         let firstDay = this.dataPlaceholder[0].x;
         let lastDay = this.dataPlaceholder[this.dataPlaceholder.length - 1].x;
-        console.log(firstDay, lastDay)
         this.yScale = d3.scaleLinear().range([this.height - this.bottom, this.top]).domain([0, this.y[1]]).nice();
-        this.xScale = d3.scaleUtc().range([this.left, this.width - this.right]).domain([firstDay, lastDay]).nice();
+        this.xScale = d3.scaleTime().range([this.left, this.width - this.right]).domain([firstDay, lastDay]);
       };
     
     createAxis() {
@@ -60,7 +60,7 @@ class LineChart {
         this.yAxis = d3.axisLeft(this.yScale);
         this.svg.append('g')
                 .attr('transform', `translate(0,${this.height - this.bottom})`)
-                .call(this.xAxis.ticks(this.width / 20).tickSizeOuter(0))
+                .call(this.xAxis.ticks(this.width / (this.dataPlaceholder.length / 4)).tickSizeOuter(0))
                   .selectAll('text')
                   .style('text-anchor', 'end')
                   .attr('dx', '-.8em')
@@ -73,6 +73,21 @@ class LineChart {
                 .attr('transform', `translate(${this.left},0)`)
                 .call(this.yAxis);
     };
+
+    createLine() {
+        this.line = d3.line()
+                      .curve(d3.curveBasis)
+                      .defined(d => !isNaN(d.x))
+                      .x((d) => this.xScale(d.x))
+                      .y((d) => this.yScale(d.y))
+
+        this.svg.append('path')
+                .datum(this.dataPlaceholder)
+                .attr('fill', 'none')
+                .attr('stroke', '#cd0a0a')
+                .attr('stroke-width', '1.8')
+                .attr('d', this.line)
+    }
 
     async loadCSV() {
         let newData = [];
@@ -102,7 +117,7 @@ async function startLineChart(object) {
     await chart.loadCSV();
     chart.createScales();
     chart.createAxis();
-    //chart.createRect();
+    chart.createLine();
     //chart.createAxisLabels();
     //if(object.dataSelector) chart.createSelector();
 };
