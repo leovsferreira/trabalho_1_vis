@@ -178,9 +178,6 @@ class BarChart {
                   .attr('y', (d) => self.yScale(d.y))
                   .attr('height', (d) => self.height - self.bottom - self.yScale(d.y))
                   .attr('width', self.xScale.bandwidth())              
-
-
-
             })
             .selectAll('option')
               .data(this.headers)

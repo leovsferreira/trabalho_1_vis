@@ -25,7 +25,7 @@ class LineChart {
         this.rows = this.config.rows;
         this.xData = this.config.xData;
         this.yData = this.config.yData;
-        this.line
+        this.line = null;
         
         this.createSvg();
     };
@@ -42,10 +42,10 @@ class LineChart {
     createScales() {
         this.dataPlaceholder = this.data.map((d) => {
           return {
-            x: new Date(d[this.xData]),
+            x: new Date (d[this.xData]),
             y: +d[this.yData]
         }});
-    
+
         this.y = d3.extent(this.dataPlaceholder, d => {
           return d.y;
         });
@@ -88,6 +88,7 @@ class LineChart {
                 .attr('stroke', '#cd0a0a')
                 .attr('stroke-width', '1.8')
                 .attr('d', this.line)
+
     }
 
     createAxisLabels() {
