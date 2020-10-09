@@ -27,13 +27,24 @@ circle:hover {
   fill: black;
 }
 
-#drop{
+#drop {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+#drop-2 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row {
+  display:flex;
+  justify-content: center;
+}
 text {
   font-size: 13px;
 }
@@ -49,7 +60,7 @@ text {
 }
 .tooltip {
   position: absolute;
-  text-align: center;
+  text-align: left;
   padding: .5rem;
   background: #FFFFFF;
   border: 1px solid #313639;

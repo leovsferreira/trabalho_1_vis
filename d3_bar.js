@@ -68,7 +68,8 @@ class BarChart {
     this.rows = this.config.rows || null;
     this.xData = this.config.xData;
     this.yData = this.config.yData;
-  
+    this.tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
     this.createSvg();
   };
 
@@ -114,7 +115,7 @@ class BarChart {
   };
 
   createRect() {
-    let tooltip = d3.select("body").append("div").attr("class", "tooltip");
+    let self = this;
     this.svg.selectAll('rect')
             .data(this.dataPlaceholder)
             .join('rect')
@@ -122,14 +123,19 @@ class BarChart {
               .attr('y', (d) => this.yScale(d.y))
               .attr('height', (d) => this.height - this.bottom - this.yScale(d.y))
               .attr('width', this.xScale.bandwidth())
-              .on("mousemove", function(d, i){
-                tooltip
-                    .style("left", event.pageX - 42 + "px")
-                    .style("top", event.pageY - 38 + "px")
-                    .style("display", "inline-block")
-                    .html((Math.round(i.y)));
-            })
-            .on("mouseout", function(d){ tooltip.style("display", "none");});
+              .on('mouseover', function(e, i) {
+                self.tooltip.transition()
+                            .duration(400)
+                            .style('opacity', .9);
+                self.tooltip.html(`${self.yData}: ${Math.round(i.y)} <br> ${self.xData}: ${i.x}`)
+                            .style("left", event.pageX - 82 + "px")
+                            .style("top", event.pageY - 70 + "px")
+            })  
+            .on('mouseout', function(e) {
+                self.tooltip.transition()
+                            .duration(400)
+                            .style('opacity', 0);
+            });
   }
 
   createAxisLabels() {

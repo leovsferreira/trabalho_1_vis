@@ -4,7 +4,8 @@ class ScatterChart {
         this.svg = null;
         this.xScale = null;
         this.yScale = null;
-        this.headers = null;
+        this.headersY = null;
+        this.headersX = null;
         this.yAxis = null;
         this.xAxis = null;
         this.selection = null;
@@ -30,7 +31,8 @@ class ScatterChart {
         this.y = [Infinity, -Infinity],
         this.cx = null;
         this.cy = null;
-      
+        this.tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
         this.createSvg();
     };
 
@@ -44,6 +46,18 @@ class ScatterChart {
     };
 
     createScales() {
+        this.headersY = this.headers.filter(e => e !== this.yData);
+        this.headersX = this.headers.filter(e => e !== this.xData);
+        this.headersX.unshift(this.xData);
+        this.headersY.unshift(this.yData);
+        let i;
+        for(i = 0; i < this.headers.length; i++) {
+            if(this.headers[i] == this.yData) {
+                this.headers[i] = this.headers[0];
+                this.headers[0] = this.yData;
+            }
+        }
+        console.log(this.headers, this.headersX, this.headersY)
 
         this.dataPlaceholder = this.data.map(d => {
             return {
@@ -70,6 +84,7 @@ class ScatterChart {
         this.xAxis = d3.axisBottom(this.xScale);
         this.yAxis = d3.axisLeft(this.yScale);
         this.svg.append('g')
+                .attr('class', 'x axis')
                 .attr('transform', `translate(0,${this.height - this.bottom})`)
                 .call(this.xAxis)
 
@@ -97,29 +112,102 @@ class ScatterChart {
       };
 
     createCircles() {
+        let self = this;
         this.svg.selectAll('circle')
                 .data(this.dataPlaceholder)
                 .join('circle')
-                .attr('cx', d => this.xScale(d.cx))
-                .attr('cy', d => this.yScale(d.cy))
-                .attr('r' , d => d.r)
+                .attr('cx', (d) => this.xScale(d.cx))
+                .attr('cy', (d) => this.yScale(d.cy))
+                .attr('r' , (d) => d.r)
+                .on('mouseover', function(e, i) {
+                    self.tooltip.transition()
+                                .duration(400)
+                                .style('opacity', .9);
+                    self.tooltip.html(`${self.yData}: ${Math.round(i.cy)} <br> ${self.xData}: ${Math.round(i.cx)}`)
+                                .style("left", event.pageX - 262 + "px")
+                                .style("top", event.pageY - 55 + "px")
+                })  
+                .on('mouseout', function(e) {
+                    self.tooltip.transition()
+                                .duration(400)
+                                .style('opacity', 0);
+                })
     }
+
+    createSelectors() {
+        let selection;
+        let self = this;
+        d3.select('#drop')
+                .append('p')
+                .text('y Axis: ')
+                .append('select')
+                .attr('id', 'dropdown')
+                .on('change', function(d){
+                  self.yData = document.getElementById('dropdown').value;
+                  self.createScales()
+                  self.yAxis = d3.axisLeft(self.yScale);
+                  self.svg.selectAll('text.y-label')
+                          .text(self.yData)
+                  self.svg.selectAll('g.y.axis')
+                          .transition()
+                          .duration(400)
+                          .call(self.yAxis)
+                  self.svg.selectAll('circle')
+                    .data(self.dataPlaceholder)
+                    .join('circle')
+                        .transition()
+                        .duration(400)
+                        .ease(d3.easeLinear)                
+                        .attr('cx', (d) => self.xScale(d.cx))
+                        .attr('cy', (d) => self.yScale(d.cy))
+                })
+                .selectAll('option')
+                    .data(this.headersY)
+                    .enter()
+                    .append('option')
+                    .attr('value', (d) => d)
+                    .text((d) => d)
+        
+        d3.select('#drop-2')
+                .append('p')
+                .text('x Axis: ')
+                .append('select')
+                .attr('id', 'dropdown-2')
+                .on('change', function(d){
+                    self.xData = document.getElementById('dropdown-2').value;
+                    self.createScales()
+                    self.xAxis = d3.axisBottom(self.xScale);
+                    self.svg.selectAll('text.x-label')
+                            .text(self.xData)
+                    self.svg.selectAll('g.x.axis')
+                            .transition()
+                            .duration(400)
+                            .call(self.xAxis)
+                    self.svg.selectAll('circle')
+                            .data(self.dataPlaceholder)
+                            .join('circle')
+                                .transition()
+                                .duration(400)
+                                .ease(d3.easeLinear)                
+                                .attr('cx', (d) => self.xScale(d.cx))
+                                .attr('cy', (d) => self.yScale(d.cy))
+                        })
+                    .selectAll('option')
+                        .data(this.headersX)
+                        .enter()
+                        .append('option')
+                        .attr('value', (d) => d)
+                        .text((d) => d)
+      }
 
     async loadCSV() {
         let newData = [];
         let i;
         this.data = await d3.csv(this.filePath);
         this.headers = this.data.columns;
-        this.headers = this.headers.filter(item => item !=  this.xData);
-        for(i = 0; i < this.headers.length; i++) {
-            if(this.headers[i] == this.yData) {
-                if(i != 0) {
-                    this.headers[i] = this.headers[0];
-                    this.headers[0] = this.yData;
-                }
-            }
-        }
-        
+        this.headers = this.headers.filter(e => e !== 'date');
+
+        console.log(this.headersX, this.headersY)
         if(this.rows) {
             for(i = 0; i < this.rows.length; i++) {
                 newData.push(this.data[this.rows[i] - 1]);
@@ -135,5 +223,6 @@ async function startScatterChart(object) {
     chart.createScales();
     chart.createAxis();
     chart.createAxisLabels();
-    chart.createCircles();  
+    chart.createCircles();
+    chart.createSelectors();  
 };
