@@ -26,15 +26,16 @@ rect:hover {
 
 text {
   font-size: 13px;
-  font-weight: bold;
 }
 
 .y-label {
- font-size: 18px
+ font-size: 18px;
+ font-weight: bold;
 }
 
 .x-label {
   font-size: 18px;
+  font-weight: bold;
 }
 .tooltip {
   position: absolute;

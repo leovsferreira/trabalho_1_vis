@@ -89,6 +89,23 @@ class LineChart {
                 .attr('d', this.line)
     }
 
+    createAxisLabels() {
+        this.svg.append('text')
+                .attr('class', 'y-label')
+                .attr('x', -this.yLabelPos[1])
+                .attr('y', this.yLabelPos[0])
+                .attr('transform', 'rotate(-90)')
+                .attr('text-anchor', 'middle')
+                .text(this.yLabel)
+
+        this.svg.append('text')
+                .attr('class', 'x-label')
+                .attr('x', this.xLabelPos[0])
+                .attr('y', this.xLabelPos[1])
+                .attr('text-anchor', 'middle')
+                .text(this.xLabel)        
+    }
+
     async loadCSV() {
         let newData = [];
         let i;
@@ -118,7 +135,7 @@ async function startLineChart(object) {
     chart.createScales();
     chart.createAxis();
     chart.createLine();
-    //chart.createAxisLabels();
+    chart.createAxisLabels();
     //if(object.dataSelector) chart.createSelector();
 };
   
