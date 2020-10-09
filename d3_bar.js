@@ -65,7 +65,7 @@ class BarChart {
     this.xLabelPos = this.config.xLabelPos;
     this.yLabelPos = this.config.yLabelPos;
     this.filePath = this.config.filePath;
-    this.rows = this.config.rows;
+    this.rows = this.config.rows || null;
     this.xData = this.config.xData;
     this.yData = this.config.yData;
   

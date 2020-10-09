@@ -17,6 +17,16 @@ rect:hover {
   fill: #cd0a0a;
 }
 
+circle {
+  stroke: black;
+  stroke-width: 1px;
+  fill: #ec0101;
+}
+
+circle:hover {
+  fill: black;
+}
+
 #drop{
   width: 100%;
   display: flex;

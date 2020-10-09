@@ -18,14 +18,16 @@ let object = {div: '#main',
               left: 90,
               bottom: 200,
               right: 10,
-              xLabel: 'dates',
+              xLabel: 'confirmed_per_100k_inhabitants',
               xLabelPos: [470, 500],
-              yLabel: 'death_rate',
+              yLabel: 'deaths',
               yLabelPos: [20, 225],
-              filePath: './data/corona_rj_data.csv',
+              filePath: './data/niteroi_series.csv',
               rows: null, 
-              xData: 'deaths',
-              yData: 'death_rate',
-              dataSelector: true};
+              xData: 'confirmed_per_100k_inhabitants',
+              yData: 'deaths',
+              circleSize: 4,
+              dataSelector: true
+            };
 
 startScatterChart(object);
