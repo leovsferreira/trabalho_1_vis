@@ -1,6 +1,6 @@
 /*
-deve ser possível atualizar o dado e a modificacao
-deve ser realcada por transicoes
+deve ser possível atualizar o dado e a 
+modificacao deve ser realcada por transicoes
 
 deve ser possivel inicializar um grafico passando:
   1 - um id de um elemento HTML
@@ -54,7 +54,6 @@ let object = {div: '#main',
               dataSelector: true};
 
 startBarChart(object);
-*/
 /*
 LINE CHART EX
 let object = {div: '#main',
