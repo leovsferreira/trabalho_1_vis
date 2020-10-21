@@ -54,6 +54,7 @@ let object = {div: '#main',
               dataSelector: true};
 
 startBarChart(object);
+*/
 /*
 LINE CHART EX
 let object = {div: '#main',
